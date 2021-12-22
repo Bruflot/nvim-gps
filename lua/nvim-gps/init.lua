@@ -17,7 +17,6 @@ local default_config = {
 	},
 	separator = ' > ',
 	depth = 0,
-	depth_limit_indicator = ".."
 }
 
 -- Languages specific default configuration must be added to configs
@@ -191,7 +190,6 @@ function M.setup(user_config)
 		setup_language_configs()
 	end
 	default_config.depth = user_config.depth or default_config.depth
-	default_config.depth_limit_indicator = user_config.depth_limit_indicator or default_config.depth_limit_indicator
 
 	-- Override languages specific configurations with user definitions
 	for lang, values in pairs(user_config.languages or {}) do
@@ -273,7 +271,7 @@ function M.get_location()
 		local parts = vim.split(context, config.separator, true)
 		if #parts > config.depth then
 			local sliced = vim.list_slice(parts, #parts-config.depth+1, #parts)
-			context = config.depth_limit_indicator .. config.separator .. table.concat(sliced, config.separator)
+			context = table.concat(sliced, config.separator)
 		end
 	end
 
