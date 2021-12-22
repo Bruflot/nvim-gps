@@ -18,7 +18,6 @@ local default_config = {
 	},
 	separator = ' > ',
 	depth = 0,
-	depth_limit_indicator = ".."
 }
 
 -- Languages specific default configuration must be added to configs
@@ -255,7 +254,6 @@ function M.setup(user_config)
 	default_config.icons = vim.tbl_extend("force", default_config.icons, user_config["icons"] or {})
 	setup_language_configs()
 	default_config.depth = user_config.depth or default_config.depth
-	default_config.depth_limit_indicator = user_config.depth_limit_indicator or default_config.depth_limit_indicator
 
 	-- Override languages specific configurations with user definitions
 	for lang, values in pairs(user_config.languages or {}) do
@@ -406,13 +404,11 @@ function M.get_location(opts)
 	local depth = config.depth
 	local separator = config.separator
 	local disable_icons = config.disable_icons
-	local depth_limit_indicator = config.depth_limit_indicator
 
 	if opts ~= nil then
 		depth = opts.depth or config.depth
 		separator = opts.separator or config.separator
 		disable_icons = opts.disable_icons or config.disable_icons
-		depth_limit_indicator = opts.depth_limit_indicator or config.depth_limit_indicator
 	end
 
 	local context = {}
@@ -426,7 +422,6 @@ function M.get_location(opts)
 
 	if depth ~= 0 and #context > depth then
 		context = vim.list_slice(context, #context-depth+1, #context)
-		table.insert(context, 1, depth_limit_indicator)
 	end
 
 	context = table.concat(context, separator)
